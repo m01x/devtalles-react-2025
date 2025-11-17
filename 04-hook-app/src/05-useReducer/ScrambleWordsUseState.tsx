@@ -2,25 +2,49 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { SkipForward, Play } from 'lucide-react';
 import { set } from 'zod';
 import confetti from 'canvas-confetti'
-import { getInitialState, scrambleWordsReducer } from './reducer/scrambleWordsReducer';
 
+const GAME_WORDS = [
+    'REACT',
+    'JAVASCRIPT',
+    'TYPESCRIPT',
+    'HTML',
+    'ANGULAR',
+    'SOLID',
+    'NODE',
+    'VUEJS',
+    'SVELTE',
+    'EXPRESS',
+    'MONGODB',
+    'POSTGRES',
+    'DOCKER',
+    'KUBERNETES',
+    'WEBPACK',
+    'VITE',
+    'TAILWIND',
+];
 
+// Esta función mezcla el arreglo para que siempre sea aleatorio
+const shuffleArray = (array: string[]) => {
+    return array.sort(() => Math.random() - 0.5);
+};
 
-
+// Esta función mezcla las letras de la palabra
+const scrambleWord = (word: string = '') => {
+    return word
+        .split('')
+        .sort(() => Math.random() - 0.5)
+        .join('');
+};
 
 export const ScrambleWords = () => {
-
-    const [ state, dispatch ] = useReducer( scrambleWordsReducer, getInitialState() );
-
-    const {  } = state;
-    /* const [words, setWords] = useState(shuffleArray(GAME_WORDS));
+    const [words, setWords] = useState(shuffleArray(GAME_WORDS));
 
     const [currentWord, setCurrentWord] = useState(words[0]);
     const [scrambledWord, setScrambledWord] = useState(scrambleWord(currentWord));
@@ -32,13 +56,13 @@ export const ScrambleWords = () => {
     const [skipCounter, setSkipCounter] = useState(0);
     const [maxSkips, setMaxSkips] = useState(3);
 
-    const [isGameOver, setIsGameOver] = useState(false); */
+    const [isGameOver, setIsGameOver] = useState(false);
 
     const handleGuessSubmit = (e: React.FormEvent) => {
         // Previene el refresh de la página
         e.preventDefault();
         // Implementar lógica de juego
-        /* console.log('Intento de adivinanza:', guess, currentWord);
+        console.log('Intento de adivinanza:', guess, currentWord);
         if (currentWord === guess) {
 
             const newWords = words.slice(1);
@@ -61,12 +85,12 @@ export const ScrambleWords = () => {
         setGuess('');
 
         if (errorCounter + 1 >= maxAllowErrors) setIsGameOver(true);
- */
+
 
     };
 
     const handleSkip = () => {
-       /*  console.log('Palabra saltada');
+        console.log('Palabra saltada');
         if (skipCounter >= maxSkips) return;
 
         const updatedWords = words.splice(1);
@@ -75,12 +99,12 @@ export const ScrambleWords = () => {
         setWords(updatedWords);
         setCurrentWord(updatedWords[0]);
         setScrambledWord(scrambleWord(updatedWords[0]));
-        setGuess(''); */
+        setGuess('');
 
     };
 
     const handlePlayAgain = () => {
-        /* console.log('Jugar de nuevo');
+        console.log('Jugar de nuevo');
         const newArray = shuffleArray(GAME_WORDS)
         setWords(newArray);
         setSkipCounter(0);
@@ -89,7 +113,7 @@ export const ScrambleWords = () => {
         setIsGameOver(false)
         setCurrentWord(newArray[0])
         setScrambledWord(scrambleWord(newArray[0]));
-        setGuess('') */
+        setGuess('')
     };
 
     //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego

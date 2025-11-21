@@ -19,7 +19,18 @@ export const ScrambleWords = () => {
 
     const [ state, dispatch ] = useReducer( scrambleWordsReducer, getInitialState() );
 
-    const {  } = state;
+    const { words,
+        currentWord,
+        errorCounter,
+        guess,
+        isGameOver,
+        maxAllowErrors,
+        maxSkips,
+        points,
+        scrambledWord,
+        skipCounter,
+        totalWords } = state;
+
     /* const [words, setWords] = useState(shuffleArray(GAME_WORDS));
 
     const [currentWord, setCurrentWord] = useState(words[0]);
@@ -37,6 +48,10 @@ export const ScrambleWords = () => {
     const handleGuessSubmit = (e: React.FormEvent) => {
         // Previene el refresh de la página
         e.preventDefault();
+
+        dispatch({
+            type:'CHECK_ANSWER'
+        })
         // Implementar lógica de juego
         /* console.log('Intento de adivinanza:', guess, currentWord);
         if (currentWord === guess) {
@@ -171,7 +186,11 @@ export const ScrambleWords = () => {
                                         type="text"
                                         value={guess}
                                         onChange={(e) =>
-                                            setGuess(e.target.value.toUpperCase().trim())
+                                            /* setGuess(e.target.value.toUpperCase().trim()) */
+                                            dispatch({
+                                                type: 'SET_GUESS',
+                                                payload: e.target.value
+                                            })
                                         }
                                         placeholder="Ingresa tu palabra..."
                                         className="text-center text-lg font-semibold h-12 border-2 border-indigo-200 focus:border-indigo-500 transition-colors"
@@ -193,7 +212,7 @@ export const ScrambleWords = () => {
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 text-center border border-green-200">
                                 <div className="text-2xl font-bold text-green-600">
-                                    {points} / {GAME_WORDS.length}
+                                    {points} / {totalWords}
                                 </div>
                                 <div className="text-sm text-green-700 font-medium">Puntos</div>
                             </div>

@@ -10,9 +10,9 @@ export interface ScrambleWordsState {
     scrambledWord: string;
     skipCounter: number;
     words: string[];
+    totalWords: number;
 }
 
-export type ScrambleWordsAction = | {type: 'NO_TENGO_IDEA_:s'};
 
 const GAME_WORDS = [
     'REACT',
@@ -50,25 +50,57 @@ const scrambleWord = (word: string = '') => {
 export const getInitialState = (): ScrambleWordsState => {
 
     const shuffleWords = shuffleArray([...GAME_WORDS])
-  return {
-    currentWord:        shuffleWords[0],
-    errorCounter:       0,
-    guess:              '',
-    isGameOver:         false,
-    maxAllowErrors:     3,
-    maxSkips:           3,
-    points:             0,
-    scrambledWord:      scrambleWord( shuffleWords[0]),
-    skipCounter:        0,
-    words:              shuffleWords,
-  }
+    return {
+        currentWord: shuffleWords[0],
+        errorCounter: 0,
+        guess: '',
+        isGameOver: false,
+        maxAllowErrors: 3,
+        maxSkips: 3,
+        points: 0,
+        scrambledWord: scrambleWord(shuffleWords[0]),
+        skipCounter: 0,
+        words: shuffleWords,
+        totalWords: shuffleWords.length,
+    }
 }
+//!Recuerda no mutar el estado directamente, sino que generar uno nuevo apartir o en reemplazo del antiguo.
+export type ScrambleWordsAction =
+    | { type: 'SET_GUESS', payload: string }
+    | { type: 'CHECK_ANSWER' }
 
-export type ScrambleWordsAction= | { type: 'NO_TENGO_LA_MENOR_IDEA___TODAVIA'}
+export const scrambleWordsReducer = (state: ScrambleWordsState, action: ScrambleWordsAction) => {
 
-export const scrambleWordsReducer = ( state: ScrambleWordsState , action: ScrambleWordsAction) => {
-  
-    switch( action.type){
+    switch (action.type) {
+
+        case 'SET_GUESS':
+            return {
+                ...state,
+                guess: action.payload.trim().toUpperCase()
+            }
+        case 'CHECK_ANSWER': {
+            if (state.currentWord === state.guess) {
+                const newWords = state.words.slice(1)
+
+                return {
+                    ...state,
+                    words: newWords,
+                    points: state.points + 1,
+                    guess: '',
+                    currentWord: newWords[0],
+                    scrambleWord: scrambleWord(newWords[0])
+                }
+            }
+            return {
+                ...state,
+                guess: '',
+                errorCounter: state.errorCounter + 1,
+                isGameOver: state.errorCounter + 1 >= state.maxAllowErrors,
+
+            }
+
+        }
+
 
         default:
             return state;

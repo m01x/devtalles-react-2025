@@ -2,14 +2,13 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { SkipForward, Play } from 'lucide-react';
-import { set } from 'zod';
-import confetti from 'canvas-confetti'
 import { getInitialState, scrambleWordsReducer } from './reducer/scrambleWordsReducer';
+import confetti from 'canvas-confetti';
 
 
 
@@ -30,6 +29,15 @@ export const ScrambleWords = () => {
         scrambledWord,
         skipCounter,
         totalWords } = state;
+    
+    useEffect(()=>{
+        if ( points ===0 ) return;
+        confetti({
+                particleCount: 100,
+                spread: 120,
+                origin: { y: 0.6 }
+            });
+    }, [ points ] );
 
     /* const [words, setWords] = useState(shuffleArray(GAME_WORDS));
 
@@ -81,6 +89,8 @@ export const ScrambleWords = () => {
     };
 
     const handleSkip = () => {
+
+        dispatch({ type: 'SKIP_WORD' });
        /*  console.log('Palabra saltada');
         if (skipCounter >= maxSkips) return;
 
@@ -95,6 +105,7 @@ export const ScrambleWords = () => {
     };
 
     const handlePlayAgain = () => {
+        dispatch( { type: 'START_NEW_GAME', payload: getInitialState() } )
         /* console.log('Jugar de nuevo');
         const newArray = shuffleArray(GAME_WORDS)
         setWords(newArray);

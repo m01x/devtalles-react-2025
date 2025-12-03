@@ -4,7 +4,7 @@ export const useCounter = (initialValue: number = 1 ) => {
 
     const [ counter, setCounter] = useState<number>(initialValue);
 
-    const inscrement = () => {
+    const increment = () => {
       setCounter(counter + 1)
     }
 
@@ -20,7 +20,7 @@ export const useCounter = (initialValue: number = 1 ) => {
     counter,
 
     //methods
-    inscrement,
+    increment,
     decrement,
   }
 }

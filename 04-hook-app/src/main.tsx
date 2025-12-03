@@ -1,9 +1,12 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from 'sonner';
 
 
 import './index.css';
-import { InstagromApp } from './07-useOptimistic/InstagromApp';
+import { ClientInformation } from './08-suspense/ClientInformation';
+import { getUserAction } from './08-suspense/api/get-user.action';
+//import { InstagromApp } from './07-useOptimistic/InstagromApp';
 // import { HooksApp } from './HooksApp';
 // import { TrafficLight } from './01-useState/TrafficLight';
 // import { TrafficLightWithEffect } from './02-useEffect/TrafficLightWithEffect';
@@ -17,6 +20,7 @@ import { InstagromApp } from './07-useOptimistic/InstagromApp';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Toaster/>
     {/* <HooksApp/> */}
     {/* <TrafficLight/> */}
     {/* <TrafficLightWithEffect/> */}
@@ -27,6 +31,16 @@ createRoot(document.getElementById('root')!).render(
     {/* <ScrambleWords/> */}
     {/* <MemoHook/> */}
     {/* <MemoCounter/> */}
-    <InstagromApp/>
+    {/* <InstagromApp/> */}
+    <Suspense
+      fallback = {
+        <div className='bg-gradient flex flex-col'>
+          <h1 className='text-2xl'>Cargando</h1>
+        </div>
+      }>
+    
+    <ClientInformation getUser={getUserAction(4001)}/>
+
+    </Suspense>
   </StrictMode>,
 )

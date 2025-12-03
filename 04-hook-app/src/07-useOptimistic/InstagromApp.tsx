@@ -1,4 +1,5 @@
 import { useOptimistic, useState, useTransition } from 'react';
+import { toast } from 'sonner';
 
 interface Comment {
   id: number;
@@ -42,13 +43,26 @@ const [ optimisticComments, addOptimisticComment ] = useOptimistic(
 
           await new Promise(resolve => setTimeout(resolve, 3000));
 
-          //console.log('Mensaje Grabado!')
+          /* //console.log('Mensaje Grabado!')
           setComments(prev => [...prev,
           {
               id: new Date().getTime(),
               text: messageText
           }
-          ]);
+          ]); */
+
+          //! Simulamos si fallase el await o peticion, devolvemos el estado anterior.
+          setComments((prev) => prev);
+          toast('Error al cargar el comentario', {
+            description: 'Intente nuevamente',
+            duration:5_000,
+            position:'top-right',
+            action:{
+              label:'Cerrar',
+              onClick: ()=> toast.dismiss(),
+            }
+          })
+
       })
 
 

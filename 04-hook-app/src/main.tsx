@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import './index.css';
 import { ClientInformation } from './08-suspense/ClientInformation';
 import { getUserAction } from './08-suspense/api/get-user.action';
+import { ProfessionalApp } from './09-useContext/ProfessionalApp';
 //import { InstagromApp } from './07-useOptimistic/InstagromApp';
 // import { HooksApp } from './HooksApp';
 // import { TrafficLight } from './01-useState/TrafficLight';
@@ -32,7 +33,7 @@ createRoot(document.getElementById('root')!).render(
     {/* <MemoHook/> */}
     {/* <MemoCounter/> */}
     {/* <InstagromApp/> */}
-    <Suspense
+  {/*   <Suspense
       fallback = {
         <div className='bg-gradient flex flex-col'>
           <h1 className='text-2xl'>Cargando</h1>
@@ -41,6 +42,10 @@ createRoot(document.getElementById('root')!).render(
     
     <ClientInformation getUser={getUserAction(4001)}/>
 
-    </Suspense>
+    </Suspense> */}
+
+    <ProfessionalApp/>
+
+
   </StrictMode>,
 )

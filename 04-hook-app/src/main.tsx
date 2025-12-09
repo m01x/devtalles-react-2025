@@ -33,16 +33,16 @@ createRoot(document.getElementById('root')!).render(
     {/* <MemoHook/> */}
     {/* <MemoCounter/> */}
     {/* <InstagromApp/> */}
-  {/*   <Suspense
-      fallback = {
-        <div className='bg-gradient flex flex-col'>
-          <h1 className='text-2xl'>Cargando</h1>
-        </div>
-      }>
-    
-    <ClientInformation getUser={getUserAction(4001)}/>
+    {/*   <Suspense
+        fallback = {
+          <div className='bg-gradient flex flex-col'>
+            <h1 className='text-2xl'>Cargando</h1>
+          </div>
+        }>
+      
+      <ClientInformation getUser={getUserAction(4001)}/>
 
-    </Suspense> */}
+      </Suspense> */}
 
     <ProfessionalApp/>
 

@@ -1,5 +1,5 @@
-import { createContext, useState, type PropsWithChildren } from "react";
-import type { User } from "../data/user-mock.data";
+import { createContext, useEffect, useState, type PropsWithChildren } from "react";
+import { users, type User } from "../data/user-mock.data";
 
 
 
@@ -27,13 +27,38 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     const [ user, setUser ] = useState<User | null>(null);
 
     const handleLogin = (userId: number) => {
-      console.log({userId});
+
+      const user = users.find((user => user.id === userId ));
+
+      if(!user){
+        console.log(`Usuario no encontrado ${userId}`);
+        setUser(null);
+        setAuthStatus('not-authenticated');
+        return false;
+      }
+
+      setUser(user);
+      setAuthStatus('authenticated');
+      localStorage.setItem('userId', userId.toString());
       return true;
+
     }
 
     const handleLogout = () => {
-      console.log('Logout')
+      console.log('Logout...');
+      setAuthStatus('not-authenticated');
+      setUser(null);
+      localStorage.removeItem('userId');
     }
+
+    //La primera vez que montemos el componente, vamos a consultar si hay info local.
+    useEffect(()=>{
+
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId){
+        handleLogin( +storedUserId );
+      }
+    }, [] );
 
   return <UserContext value={{
     authStatus: authStatus,

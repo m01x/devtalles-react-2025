@@ -11,7 +11,7 @@ interface UserContextProps {
     //states
     authStatus:             AuthStatus;
     user:                   User | null;
-
+    isAuthenticated:        boolean;
 
     //methods
     login:                  (userId: number) => boolean;
@@ -57,12 +57,15 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
       const storedUserId = localStorage.getItem('userId');
       if (storedUserId){
         handleLogin( +storedUserId );
+      } else {
+        setAuthStatus("not-authenticated")
       }
     }, [] );
 
   return <UserContext value={{
     authStatus: authStatus,
     user: user,
+    isAuthenticated: authStatus=== 'authenticated',
     login: handleLogin,
     logout: handleLogout
   }}>{ children }</UserContext>

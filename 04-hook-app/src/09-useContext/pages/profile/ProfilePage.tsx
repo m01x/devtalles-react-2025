@@ -1,17 +1,14 @@
-import { UserContext } from "@/09-useContext/context/UserContext"
-import { Button } from "@/components/ui/button"
-import { useContext } from "react"
-import { useNavigate } from "react-router";
+import { UserContext } from "@/09-useContext/context/UserContext";
+import { Button } from "@/components/ui/button";
+import { useContext } from "react";
 
 export const ProfilePage = () => {
 
   const { user, logout } = useContext(UserContext);
-  const navigation = useNavigate();
 
   const handleLogout = () => {
 
     logout();
-    navigation('/login');
     
   }
 

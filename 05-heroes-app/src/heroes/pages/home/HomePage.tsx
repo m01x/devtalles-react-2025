@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron";
@@ -9,11 +10,17 @@ import { CustomPagination } from "@/components/custom/CustomPagination";
 import { CustomBreadcrumb } from "@/components/custom/CustomBreadcrumb";
 import { getHeroByPageAction } from "@/heroes/actions/get-heroes-by-page.action";
 
+type Tab = "all" | "favorites" | "heroes" | "villains";
 
 export const HomePage = () => {
-  const [activeTab, setActiveTab] = useState<
-    "all" | "favorites" | "heroes" | "villains"
-  >("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeTab = searchParams.get("tab") ?? "all";
+
+  const selectedTab = useMemo(() => {
+    const validTabs = ["all", "favorites", "heroes", "villains"];
+    return validTabs.includes(activeTab) ? activeTab : "all";
+  }, [activeTab]);
 
   //! Podriamos decir que utilizar Effectos para realizar llamadas http con TanStack , ya esta obsoleto.
   // useEffect(() => {
@@ -21,12 +28,10 @@ export const HomePage = () => {
   // }, []);
 
   const { data: heroesResponse } = useQuery({
-    queryKey: ['heroes'],                 // identificador de la query.
+    queryKey: ["heroes"], // identificador de la query.
     queryFn: () => getHeroByPageAction(), //QueryFunction, axios | fetch.
-    staleTime: 1000 * 60 * 5,             //5 minutos de cache en la peticion http.
+    staleTime: 1000 * 60 * 5, //5 minutos de cache en la peticion http.
   });
-
-
 
   return (
     <>
@@ -38,30 +43,56 @@ export const HomePage = () => {
         />
 
         {/* Custom Breadcumb */}
-        <CustomBreadcrumb/>
+        <CustomBreadcrumb />
 
         {/* Stats Dashboard */}
         <HeroStats />
 
         {/* Tabs */}
-        <Tabs value={activeTab} className="mb-8">
+        <Tabs value={selectedTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all" onClick={() => setActiveTab("all")}>
+            <TabsTrigger
+              value="all"
+              onClick={() =>
+                setSearchParams((prev) => {
+                  prev.set("tab", "all");
+                  return prev;
+                })
+              }
+            >
               All Characters (16)
             </TabsTrigger>
             <TabsTrigger
               value="favorites"
-              onClick={() => setActiveTab("favorites")}
+              onClick={() =>
+                setSearchParams((prev) => {
+                  prev.set("tab", "favourites");
+                  return prev;
+                })
+              }
               className="flex items-center gap-2"
             >
               Favorites (3)
             </TabsTrigger>
-            <TabsTrigger value="heroes" onClick={() => setActiveTab("heroes")}>
+            <TabsTrigger
+              value="heroes"
+              onClick={() =>
+                setSearchParams((prev) => {
+                  prev.set("tab", "heroes");
+                  return prev;
+                })
+              }
+            >
               Heroes (12)
             </TabsTrigger>
             <TabsTrigger
               value="villains"
-              onClick={() => setActiveTab("villains")}
+              onClick={() =>
+                setSearchParams((prev) => {
+                  prev.set("tab", "villains");
+                  return prev;
+                })
+              }
             >
               Villains (2)
             </TabsTrigger>
@@ -69,7 +100,7 @@ export const HomePage = () => {
 
           <TabsContent value="all">
             {/* Mostrar Hero Grid */}
-            <HeroGrid heroes={heroesResponse?.heroes ?? [] } />
+            <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
           <TabsContent value="favorites">
             <h1>Favoritos!!!</h1>

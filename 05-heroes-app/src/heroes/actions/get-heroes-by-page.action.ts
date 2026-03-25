@@ -4,7 +4,7 @@ import type { HeroesResponse } from "../interfaces/get-heroes.response";
 
 const BASE_URL: string = import.meta.env.VITE_API_URL;
 
-export const getHeroByPageAction = async( page: number, limit: number = 6):Promise<HeroesResponse> => {
+export const getHeroByPageAction = async( page: number, limit: number = 6, category: string = 'all'):Promise<HeroesResponse> => {
 
   if (isNaN(page)) {
     page = 1;
@@ -18,6 +18,7 @@ export const getHeroByPageAction = async( page: number, limit: number = 6):Promi
     params: {
       limit: limit,
       offset: (page - 1) * limit,
+      category: category,
     }
   });
 

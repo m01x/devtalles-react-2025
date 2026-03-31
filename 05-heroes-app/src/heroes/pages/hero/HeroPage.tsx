@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,10 +8,17 @@ import { Shield, Zap, Brain, Gauge, Users, Star, Award } from "lucide-react";
 import { useHero } from "@/heroes/hooks/useHero";
 
 export const HeroPage = () => {
-  const { idSlug } = useParams(); //Parametro que llega desde url , si no viene, undefined.
-  const { data: superheroData } = useHero(idSlug ?? "");
+  const { idSlug = "" } = useParams(); //Parametro que llega desde url , si no viene, undefined.
+  const { data: superheroData, isError } = useHero(idSlug ?? "");
 
-  console.log(idSlug);
+  //Si alguien puro mal una URL
+  if (isError) {
+    return <Navigate to="/" />;
+  }
+  // Early return por si es undefined.
+  if (!superheroData) {
+    return <h3>Loading content...</h3>;
+  }
 
   const totalPower =
     superheroData.strength +

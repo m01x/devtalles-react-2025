@@ -9,21 +9,24 @@ import {
 import { cn } from "@/lib/utils";
 
 export const CustomMenu = () => {
+  const { pathname } = useLocation();
 
-    const { pathname } = useLocation();
-    
-
-    const isActive = ( path : string ) => {
-        return pathname === path;
-    }
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="py-5">
       <NavigationMenuList>
-
         {/* Home */}
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), isActive('/') && 'bg-slate-200 ','round-md p-2')}
+          <NavigationMenuLink
+            asChild
+            className={cn(
+              navigationMenuTriggerStyle(),
+              isActive("/") && "bg-slate-200 ",
+              "round-md p-2",
+            )}
           >
             <Link to="/">Inicio</Link>
           </NavigationMenuLink>
@@ -31,11 +34,17 @@ export const CustomMenu = () => {
 
         {/* Search */}
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), isActive('/search') && 'bg-slate-200 ','round-md p-2')}>
+          <NavigationMenuLink
+            asChild
+            className={cn(
+              navigationMenuTriggerStyle(),
+              isActive("/search") && "bg-slate-200 ",
+              "round-md p-2",
+            )}
+          >
             <Link to="/search">Buscar Super Heroes</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
-
       </NavigationMenuList>
     </NavigationMenu>
   );
